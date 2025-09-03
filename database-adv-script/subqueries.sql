@@ -1,0 +1,28 @@
+A query to find all properties where the average rating is greater than 4.0 using a subquery.
+property_id, review_id, rating
+
+SELECT
+ property.id,
+ name
+FROM REVIEW
+WHERE rating > 4.0 ;
+
+
+A correlated subquery to find users who have made more than 3 bookings.
+
+SELECT
+ user_id,
+ user.first_name,
+ user.last_name,
+ user.email
+FROM 
+ users
+WHERE
+    (
+     SELECT
+       COUNT(booking.booking_id)
+     FROM
+       booking
+     WHERE
+       booking.user_id = user.user_id
+     ) > 3;
