@@ -1,12 +1,22 @@
 A query to find all properties where the average rating is greater than 4.0 using a subquery.
-property_id, review_id, rating
 
 SELECT
- property.id,
- name
-FROM REVIEW
-WHERE rating > 4.0 ;
-
+ property.property.id,
+ propery.name
+FROM 
+ property
+WHERE 
+     propery.propety_id IN (
+      	SELECT
+        	review.property_id
+      	FROM
+        	review
+      	GROUP BY
+        	review.property_id
+      	HAVING
+        	AVG(review.rating) > 4.0
+     );
+	
 
 A correlated subquery to find users who have made more than 3 bookings.
 
