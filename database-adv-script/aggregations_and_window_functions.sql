@@ -29,7 +29,7 @@ SELECT
 FROM
     property
 JOIN
-    booking AS b ON property.property_id = booking.property_id
+    booking ON property.property_id = booking.property_id
 GROUP BY
     property.property_id,
     property.name
