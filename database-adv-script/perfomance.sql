@@ -33,6 +33,7 @@ INNER JOIN
 LEFT JOIN
     payment AS pay ON b.booking_id = pay.booking_id;
 
+---Analyze the query’s performance using EXPLAIN and identify any inefficiencies
 EXPLAIN
 SELECT
     -- Booking Details
