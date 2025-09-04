@@ -12,7 +12,7 @@ You should see a new execution plan that includes an Index Scan on the booking t
 -- The database will likely perform a full table scan, which is less efficient.
 -- You will see a "Seq Scan" or similar in the execution plan output.
 
-EXPLAIN or ANALYZE
+EXPLAIN
 SELECT
     p.property_id,
     p.name,
@@ -31,6 +31,24 @@ GROUP BY
 ORDER BY
     ranking ASC;
 
+ANALYZE
+SELECT
+    p.property_id,
+    p.name,
+    COUNT(b.booking_id) AS total_bookings,
+    RANK() OVER (
+        ORDER BY
+            COUNT(b.booking_id) DESC
+    ) AS ranking
+FROM
+    property AS p
+JOIN
+    booking AS b ON p.property_id = b.property_id
+GROUP BY
+    p.property_id,
+    p.name
+ORDER BY
+    ranking ASC;
 
 -- Step 2: Add the indexes to their respective columns.
 -- These are the indexes that are crucial for optimizing the JOIN operation.
@@ -43,7 +61,7 @@ CREATE INDEX idx_booking_property_id ON booking (property_id);
 -- The execution plan will likely change to an "Index Scan" or "Hash Join" with an index lookup,
 -- and the execution time will be significantly lower, especially with large datasets.
 
-EXPLAIN ANALYZE
+EXPLAIN 
 SELECT
     p.property_id,
     p.name,
@@ -62,6 +80,24 @@ GROUP BY
 ORDER BY
     ranking ASC;
 
+ANALYZE
+SELECT
+    p.property_id,
+    p.name,
+    COUNT(b.booking_id) AS total_bookings,
+    RANK() OVER (
+        ORDER BY
+            COUNT(b.booking_id) DESC
+    ) AS ranking
+FROM
+    property AS p
+JOIN
+    booking AS b ON p.property_id = b.property_id
+GROUP BY
+    p.property_id,
+    p.name
+ORDER BY
+    ranking ASC;
 
 -- Final Step (Optional): Clean up the created index.
 -- This is good practice if you want to remove the index after testing.
