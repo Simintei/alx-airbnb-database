@@ -13,26 +13,7 @@ CREATE INDEX idx_property_host_id ON property (host_id);
 -- The database will likely perform a full table scan, which is less efficient.
 -- You will see a "Seq Scan" or similar in the execution plan output.
 
-EXPLAIN
-SELECT
-    p.property_id,
-    p.name,
-    COUNT(b.booking_id) AS total_bookings,
-    RANK() OVER (
-        ORDER BY
-            COUNT(b.booking_id) DESC
-    ) AS ranking
-FROM
-    property AS p
-JOIN
-    booking AS b ON p.property_id = b.property_id
-GROUP BY
-    p.property_id,
-    p.name
-ORDER BY
-    ranking ASC;
-
-ANALYZE
+EXPLAIN ANALYZE
 SELECT
     p.property_id,
     p.name,
@@ -62,26 +43,7 @@ CREATE INDEX idx_booking_property_id ON booking (property_id);
 -- The execution plan will likely change to an "Index Scan" or "Hash Join" with an index lookup,
 -- and the execution time will be significantly lower, especially with large datasets.
 
-EXPLAIN 
-SELECT
-    p.property_id,
-    p.name,
-    COUNT(b.booking_id) AS total_bookings,
-    RANK() OVER (
-        ORDER BY
-            COUNT(b.booking_id) DESC
-    ) AS ranking
-FROM
-    property AS p
-JOIN
-    booking AS b ON p.property_id = b.property_id
-GROUP BY
-    p.property_id,
-    p.name
-ORDER BY
-    ranking ASC;
-
-ANALYZE
+EXPLAIN ANALYZE
 SELECT
     p.property_id,
     p.name,
