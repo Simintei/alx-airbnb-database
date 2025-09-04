@@ -29,15 +29,15 @@ FROM
     booking AS b
 
 -- Join with the users table on user_id to get user information
-JOIN
+INNER JOIN
     users AS u ON b.user_id = u.user_id
 
 -- Join with the property table on property_id to get property information
-JOIN
+INNER JOIN
     property AS p ON b.property_id = p.property_id
 
 -- Join with the payment table on booking_id to get payment information
-JOIN
+LEFT JOIN
     payment AS pay ON b.booking_id = pay.booking_id;
 
 EXPLAIN
@@ -68,11 +68,11 @@ SELECT
 FROM
     booking AS b
 -- Join with the users table on user_id to get user information
-JOIN
+INNER JOIN
     users AS u ON b.user_id = u.user_id
 -- Join with the property table on property_id to get property information
-JOIN
+INNER JOIN
     property AS p ON b.property_id = p.property_id
 -- Join with the payment table on booking_id to get payment information
-JOIN
+LEFT JOIN
     payment AS pay ON b.booking_id = pay.booking_id;
