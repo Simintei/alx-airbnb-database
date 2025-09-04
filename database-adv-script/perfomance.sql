@@ -2,13 +2,6 @@
 
 
 SELECT
-    -- Booking Details
-    b.booking_id,
-    b.start_date,
-    b.end_date,
-    b.status AS booking_status,
-    b.created_at AS booking_created_at,
-
     -- User Details
     u.user_id,
     u.first_name,
