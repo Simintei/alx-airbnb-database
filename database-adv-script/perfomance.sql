@@ -1,74 +1,93 @@
 --Write an initial query that retrieves all bookings along with the user details, property details, and payment details and save it on perfomance.sql
 
-SELECT
-    -- All columns from the booking table
-    b.*,
+SELECT  
+    -- Booking Details  
+    b.booking_id,  
+    b.start_date,  
+    b.end_date,  
+    b.status AS booking_status,  
+    b.created_at AS booking_created_at,  
 
-    -- User Details
-    u.first_name,
-    u.last_name,
-    u.email,
+    -- User Details  
+    u.user_id,  
+    u.first_name,  
+    u.last_name,  
+    u.email,  
 
-    -- Property Details
-    p.name AS property_name,
-    p.location,
-    p.price_per_night,
+    -- Property Details  
+    p.property_id,  
+    p.name AS property_name,  
+    p.location,  
+    p.price_per_night,  
 
-    -- Payment Details
-    pay.payment_id,
-    pay.amount AS payment_amount
+    -- Payment Details  
+    pay.payment_id,  
+    pay.amount AS payment_amount  
 
-FROM
-    booking AS b
+FROM  
+    booking AS b  
 
--- Join with the users table to link users to their bookings
-INNER JOIN
-    users AS u ON b.user_id = u.user_id
+-- Join with the users table on user_id to get user information  
+JOIN  
+    users AS u ON b.user_id = u.user_id  
 
--- Join with the property table to link properties to bookings
-INNER JOIN
-    property AS p ON b.property_id = p.property_id
+-- Join with the property table on property_id to get property information  
+JOIN  
+    property AS p ON b.property_id = p.property_id  
 
--- Join with the payment table to link payments to bookings
-LEFT JOIN
-    payment AS pay ON b.booking_id = pay.booking_id;
+-- Join with the payment table on booking_id to get payment information  
+JOIN  
+    payment AS pay ON b.booking_id = pay.booking_id
+
+-- Filter the results for confirmed bookings with a price per night less than $100
+WHERE
+    b.status = 'confirmed'
+    AND p.price_per_night < 100;
 
 
 
 ---Analyze the query’s performance using EXPLAIN and identify any inefficiencies
 EXPLAIN
-SELECT
-    --- Booking Details
-    b.booking_id,
-    b.start_date,
-    b.end_date,
-    b.status AS booking_status,
-    b.created_at AS booking_created_at,
+SELECT  
+    -- Booking Details  
+    b.booking_id,  
+    b.start_date,  
+    b.end_date,  
+    b.status AS booking_status,  
+    b.created_at AS booking_created_at,  
 
-    --- User Details
-    u.user_id,
-    u.first_name,
-    u.last_name,
-    u.email,
+    -- User Details  
+    u.user_id,  
+    u.first_name,  
+    u.last_name,  
+    u.email,  
 
-    -- Property Details
-    p.property_id,
-    p.name AS property_name,
-    p.location,
-    p.price_per_night,
+    -- Property Details  
+    p.property_id,  
+    p.name AS property_name,  
+    p.location,  
+    p.price_per_night,  
 
-    -- Payment Details
-    pay.payment_id,
-    pay.amount AS payment_amount
+    -- Payment Details  
+    pay.payment_id,  
+    pay.amount AS payment_amount  
 
-FROM
-    booking AS b
--- Join with the users table on user_id to get user information
-INNER JOIN
-    users AS u ON b.user_id = u.user_id
--- Join with the property table on property_id to get property information
-INNER JOIN
-    property AS p ON b.property_id = p.property_id
--- Join with the payment table on booking_id to get payment information
-LEFT JOIN
-    payment AS pay ON b.booking_id = pay.booking_id;
+FROM  
+    booking AS b  
+
+-- Join with the users table on user_id to get user information  
+JOIN  
+    users AS u ON b.user_id = u.user_id  
+
+-- Join with the property table on property_id to get property information  
+JOIN  
+    property AS p ON b.property_id = p.property_id  
+
+-- Join with the payment table on booking_id to get payment information  
+JOIN  
+    payment AS pay ON b.booking_id = pay.booking_id
+
+-- Filter the results for confirmed bookings with a price per night less than $100
+WHERE
+    b.status = 'confirmed'
+    AND p.price_per_night < 100;
